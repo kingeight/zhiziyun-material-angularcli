@@ -23,7 +23,8 @@
 * 请注意，由于浏览器同源策略，不同的域名无法直接通过浏览器进行数据通讯，解决方案包括ngnix、代理、配置同源策略文件等，这里介绍使用代理的方式。
 在项目根目录创建文件proxy.config.js文件，内容类似
 
-```const PROXY_CONFIG = [
+```
+const PROXY_CONFIG = [
      {
          "context": [
              "/options"
