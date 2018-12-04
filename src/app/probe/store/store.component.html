@@ -1,0 +1,73 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card">
+          <app-full-screen></app-full-screen>
+          <div class="card-body ">
+            <form class="form-inline form-row">
+              <div class="form-group input-group col-12">
+                <mat-form-field class="example-form-field">
+                  <input matInput type="text" placeholder="输入名称搜索"
+                         name="searchText" [(ngModel)]="searchText">
+                </mat-form-field>
+                <div class="input-group-append">
+                  <button mat-button class="btn  btn-primary" (click)="searchStore()" type="button">搜索</button>
+                </div>
+              </div>
+              <div class="form-group input-group col-12">
+                <button mat-button class="btn btn-success" (click)="openAddStoreDialog()">新增门店</button>
+              </div>
+            </form>
+            <div class="table-responsive">
+              <table mat-table [dataSource]="storeList" class="table">
+                <ng-container matColumnDef="name">
+                  <th mat-header-cell *matHeaderCellDef>名称</th>
+                  <td mat-cell *matCellDef="let item"> {{item.name}}</td>
+                </ng-container>
+                <ng-container matColumnDef="probeCount">
+                  <th mat-header-cell *matHeaderCellDef>绑定探针数</th>
+                  <td mat-cell *matCellDef="let item"> {{item.probeCount}}</td>
+                </ng-container>
+                <ng-container matColumnDef="createTime">
+                  <th mat-header-cell *matHeaderCellDef>创建时间</th>
+                  <td mat-cell *matCellDef="let item"> {{item.createTime}}</td>
+                </ng-container>
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef>
+                    <i class="material-icons">
+                      settings
+                    </i>
+                  </th>
+                  <td mat-cell *matCellDef="let item;let i=index;">
+                    <a [routerLink]="['/store',item.id]">查看探针</a>&nbsp;&nbsp;
+                    <a *ngIf="!item.bdId" href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">操作
+                      <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-left">
+                      <li mat-menu-item>
+                        <a href="javascript:;" (click)="openEditStoreDialog(i)">编辑</a>
+                      </li>
+                      <li mat-menu-item>
+                        <a href="javascript:;" (click)="delStore(item)">删除</a>
+                      </li>
+                    </ul>
+                  </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+              <mat-paginator [length]="total"
+                             [pageIndex]="page"
+                             [pageSize]="rows"
+                             [pageSizeOptions]="[10, 20, 50]"
+                             [showFirstLastButtons]="true"
+                             (page)="getStoreList($event)">
+              </mat-paginator>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

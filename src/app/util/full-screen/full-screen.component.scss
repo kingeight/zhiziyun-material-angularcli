@@ -1,0 +1,12 @@
+.full-screen-icon{
+  cursor:pointer;
+  display:block;
+  float:right;
+  margin:8px;
+}
+
+@media (max-width: 991px){
+  .full-screen-icon{
+    display:none;
+  }
+}

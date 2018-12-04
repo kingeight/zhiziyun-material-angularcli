@@ -1,0 +1,64 @@
+<h4 mat-dialog-title>我的信息</h4>
+<div mat-dialog-content>
+  <form   class="form-horizontal" >
+    <div class="row">
+      <label class="col-md-3 col-2 col-form-label">用户编号</label>
+      <div class="col-md-9 col-9">
+        <mat-form-field  class="example-full-width">
+          <input matInput type="text" required [value]="user.userId" name="name" disabled>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <label class="col-md-3 col-2 col-form-label">用户名</label>
+      <div class="col-md-9 col-9">
+        <mat-form-field  class="example-full-width">
+          <input matInput type="text" required [value]="user.userName" name="name" disabled>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <label class="col-md-3 col-2 col-form-label">登录邮箱</label>
+      <div class="col-md-9 col-9">
+        <mat-form-field  class="example-full-width">
+          <input matInput type="text" required [value]="user.email" name="name" disabled>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <label class="col-md-3 col-2 col-form-label">备注</label>
+      <div class="col-md-9 col-9">
+        <mat-form-field  class="example-full-width">
+          <input matInput type="text" required [value]="user.note" name="name" disabled>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <label class="col-md-3 col-2 col-form-label">状态</label>
+      <div class="col-md-9 col-9">
+        <mat-form-field  class="example-full-width">
+          <input matInput type="text" required [value]="sta" name="name" disabled>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <label class="col-md-3 col-2 col-form-label">注册时间</label>
+      <div class="col-md-9 col-9">
+        <mat-form-field  class="example-full-width">
+          <input matInput type="text" required [value]="user.registerTime" name="name" disabled>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <label class="col-md-3 col-2 col-form-label">最近一次登录时间</label>
+      <div class="col-md-9 col-9">
+        <mat-form-field  class="example-full-width">
+          <input matInput type="text" required [value]="user.loginTime" name="name" disabled>
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button class="btn btn-success" (click)="ok()"  cdkFocusInitial>确定</button>
+</div>

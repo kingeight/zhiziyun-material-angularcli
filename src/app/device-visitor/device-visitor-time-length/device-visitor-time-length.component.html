@@ -1,0 +1,87 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card">
+          <app-full-screen></app-full-screen>
+          <div class="card-body ">
+            <p class="text-info">
+              <i class="material-icons">
+                warning
+              </i>通过分析顾客驻店时长情况，了解客户停留时间，为运营决策提供辅助依据，数据更新频率30分钟
+            </p>
+            <form class="form-inline form-row">
+              <div class="form-group input-group col-12">
+                <app-date-range-picker [singleDatePicker]="false" [format]="'YYYY-MM-DD'"
+                                       [(date)]="selectedDate" [showRanges]="true"></app-date-range-picker>
+              </div>
+              <div class="form-group input-group col-12">
+                <mat-form-field>
+                  <mat-select placeholder="选择门店" [(value)]="selectedStore">
+                    <mat-option *ngFor="let store of stores" [value]="store.id">
+                      {{store.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="form-group input-group col-12">
+                <mat-form-field>
+                  <mat-select placeholder="选择探针" [(value)]="selectedProbe">
+                    <mat-option *ngFor="let probe of probes | filterProbeByStore:selectedStore" [value]="probe.id">
+                      {{probe.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="form-group input-group col-12">
+                <button mat-flat-button class="btn btn-primary" aria-label="Clear" (click)="search()">
+                  查询
+                </button>
+              </div>
+              <div class="form-group input-group col-12">
+                <button mat-flat-button class="btn btn-success" aria-label="Clear" (click)="export()">
+                  导出数据
+                </button>
+              </div>
+            </form>
+            <div class="row">
+              <div class="col-md-12 ml-auto mr-auto">
+                <div style="min-height:200px;height:400px;" *ngIf="pieChartLabels.length>0">
+                  <canvas baseChart
+                          [data]="pieChartData"
+                          [labels]="pieChartLabels"
+                          [options]="pieChartOptions"
+                          chartType="pie"></canvas>
+                </div>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table mat-table [dataSource]="list" class="table">
+                <ng-container matColumnDef="timeLength">
+                  <th mat-header-cell *matHeaderCellDef>停留时长</th>
+                  <td mat-cell *matCellDef="let item"> {{item.timeLength}}</td>
+                </ng-container>
+                <ng-container matColumnDef="uv">
+                  <th mat-header-cell *matHeaderCellDef>人数</th>
+                  <td mat-cell *matCellDef="let item"> {{item.uv}}</td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+              <mat-paginator [length]="total"
+                             [pageIndex]="page"
+                             [pageSize]="rows"
+                             [pageSizeOptions]="[10, 20, 50]"
+                             [showFirstLastButtons]="true"
+                             (page)="getList($event)">
+              </mat-paginator>
+              <form style="display:none;" id='universalExcel' target='_blank' method='post'
+                    action='dereport/printExcel.action'>
+                <input name='data'/>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

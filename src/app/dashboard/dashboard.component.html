@@ -1,0 +1,436 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <h3>今日数据概览</h3>
+        <div class="row">
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="card card-stats">
+                    <div class="card-header card-header-warning card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">people_outline</i>
+                        </div>
+                        <p class="card-category">客流量</p>
+                        <h3 *ngIf="dashboardProbeData.totalUV!=undefined" class="card-title">
+                            {{dashboardProbeData!.totalUV}}</h3>
+                        <h3 *ngIf="dashboardProbeData.totalUV===undefined" class="card-title">--</h3>
+                    </div>
+                    <div class="card-footer">
+                        <div class="stats">
+                            探针探测到的所有数据量
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="card card-stats">
+                    <div class="card-header card-header-rose card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">people</i>
+                        </div>
+                        <p class="card-category">进店人数</p>
+                        <h3 *ngIf="dashboardProbeData.uv!=undefined" class="card-title">{{dashboardProbeData!.uv}}</h3>
+                        <h3 *ngIf="dashboardProbeData.uv===undefined" class="card-title">--</h3>
+                    </div>
+                    <div class="card-footer">
+                        <div class="stats">
+                            计算出在范围内的数据量
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="card card-stats">
+                    <div class="card-header card-header-success card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">accessibility</i>
+                        </div>
+                        <p class="card-category">进店率</p>
+                        <h3 *ngIf="dashboardProbeData.totalUV" class="card-title">
+                            {{dashboardProbeData.uv/dashboardProbeData.totalUV|percent:'1.2-2'}}</h3>
+                        <h3 *ngIf="!dashboardProbeData.totalUV" class="card-title">--</h3>
+                    </div>
+                    <div class="card-footer">
+                        <div class="stats">
+                            进入探测范围内的人所占比例
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 col-sm-6">
+                <div class="card card-stats">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">accessibility_new</i>
+                        </div>
+                        <p class="card-category">新客比例</p>
+                        <h3 *ngIf="dashboardProbeData.uv" class="card-title">
+                            {{dashboardProbeData.totalUVNew/dashboardProbeData.uv|percent:'1.2-2'}}</h3>
+                        <h3 *ngIf="!dashboardProbeData.uv" class="card-title">--</h3>
+                    </div>
+                    <div class="card-footer">
+                        <div class="stats">
+                            进店的人当中新访客所占比例
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h3>今日客流趋势</h3>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-success card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">show_chart</i>
+                        </div>
+                        <div class="card-title col-md-4 pull-right">
+                            <mat-form-field>
+                                <mat-select placeholder="选择探针" [(ngModel)]="selectedProbe"
+                                            (selectionChange)="changeProbes()">
+                                    <mat-option>全部</mat-option>
+                                    <mat-option *ngFor="let probe of probes" [value]="probe.id">
+                                        {{ probe.name }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12 ml-auto mr-auto" *ngIf="barChartData.length>0">
+                                <canvas baseChart
+                                        [colors]="barChartColor"
+                                        [datasets]="barChartData"
+                                        [labels]="barChartLabels"
+                                        [options]="barChartOptions"
+                                        [legend]="barChartLegend"
+                                        [chartType]="barChartType"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table mat-table [dataSource]="storeListData" class="table">
+                                <ng-container matColumnDef="storeName">
+                                    <th mat-header-cell *matHeaderCellDef>门店</th>
+                                    <td mat-cell *matCellDef="let item"> {{item.storeName}}</td>
+                                </ng-container>
+                                <ng-container matColumnDef="totalUV">
+                                    <th mat-header-cell *matHeaderCellDef>客流人数</th>
+                                    <td mat-cell *matCellDef="let item"> {{item.totalUV}}</td>
+                                </ng-container>
+                                <ng-container matColumnDef="uv">
+                                    <th mat-header-cell *matHeaderCellDef>进店人数</th>
+                                    <td mat-cell *matCellDef="let item"> {{item.uv}}</td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--<div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                  <div class="card-header card-header-success card-header-icon">
+                    <div class="card-icon">
+                      <i class="material-icons"></i>
+                    </div>
+                    <h4 class="card-title">Global Sales by Top Locations</h4>
+                  </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <app-md-table
+                                  [data]="tableData">
+                              </app-md-table>
+                            </div>
+                            <div class="col-md-6 ml-auto mr-auto">
+                                <div id="worldMap" class="map"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card card-chart">
+              <div class="card-header card-header-rose" data-header-animation="true">
+                <div class="ct-chart" id="websiteViewsChart"></div>
+              </div>
+              <div class="card-body">
+                <div class="card-actions">
+                  <button mat-raised-button type="button" class="btn btn-danger btn-link fix-broken-card">
+                    <i class="material-icons">build</i> Fix Header!
+                  </button>
+                  <button mat-raised-button type="button" class="btn btn-info btn-link" matTooltip="Refresh" [matTooltipPosition]="'below'">
+                    <i class="material-icons">refresh</i>
+                  </button>
+                  <button mat-raised-button type="button" class="btn btn-default btn-link" matTooltip="Change Date" [matTooltipPosition]="'below'">
+                    <i class="material-icons">edit</i>
+                  </button>
+                </div>
+                <h4 class="card-title">Website Views</h4>
+                <p class="card-category">Last Campaign Performance</p>
+              </div>
+              <div class="card-footer">
+                <div class="stats">
+                  <i class="material-icons">access_time</i> campaign sent 2 days ago
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card card-chart">
+              <div class="card-header card-header-success" data-header-animation="true">
+                <div class="ct-chart" id="dailySalesChart"></div>
+              </div>
+              <div class="card-body">
+                <div class="card-actions">
+                  <button mat-raised-button type="button" class="btn btn-danger btn-link fix-broken-card">
+                    <i class="material-icons">build</i> Fix Header!
+                  </button>
+                  <button mat-raised-button type="button" class="btn btn-info btn-link" matTooltip="Refresh" [matTooltipPosition]="'below'">
+                    <i class="material-icons">refresh</i>
+                  </button>
+                  <button mat-raised-button type="button" class="btn btn-default btn-link" matTooltip="Change Date" [matTooltipPosition]="'below'">
+                    <i class="material-icons">edit</i>
+                  </button>
+                </div>
+                <h4 class="card-title">Daily Sales</h4>
+                <p class="card-category">
+                  <span class="text-success"><i class="fa fa-long-arrow-up"></i> 55% </span> increase in today sales.</p>
+              </div>
+              <div class="card-footer">
+                <div class="stats">
+                  <i class="material-icons">access_time</i> updated 4 minutes ago
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card card-chart">
+              <div class="card-header card-header-info" data-header-animation="true">
+                <div class="ct-chart" id="completedTasksChart"></div>
+              </div>
+              <div class="card-body">
+                <div class="card-actions">
+                  <button mat-raised-button type="button" class="btn btn-danger btn-link fix-broken-card">
+                    <i class="material-icons">build</i> Fix Header!
+                  </button>
+                  <button mat-raised-button type="button" class="btn btn-info btn-link" matTooltip="Refresh" [matTooltipPosition]="'below'">
+                    <i class="material-icons">refresh</i>
+                  </button>
+                  <button mat-raised-button type="button" class="btn btn-default btn-link" matTooltip="Change Date" [matTooltipPosition]="'below'">
+                    <i class="material-icons">edit</i>
+                  </button>
+                </div>
+                <h4 class="card-title">Completed Tasks</h4>
+                <p class="card-category">Last Campaign Performance</p>
+              </div>
+              <div class="card-footer">
+                <div class="stats">
+                  <i class="material-icons">access_time</i> campaign sent 2 days ago
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-stats">
+              <div class="card-header card-header-warning card-header-icon">
+                <div class="card-icon">
+                  <i class="material-icons">weekend</i>
+                </div>
+                <p class="card-category">Bookings</p>
+                <h3 class="card-title">184</h3>
+              </div>
+              <div class="card-footer">
+                <div class="stats">
+                  <i class="material-icons text-danger">warning</i>
+                  <a href="#pablo">Get More Space...</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-stats">
+              <div class="card-header card-header-rose card-header-icon">
+                <div class="card-icon">
+                  <i class="material-icons">equalizer</i>
+                </div>
+                <p class="card-category">Website Visits</p>
+                <h3 class="card-title">75.521</h3>
+              </div>
+              <div class="card-footer">
+                <div class="stats">
+                  <i class="material-icons">local_offer</i> Tracked from Google Analytics
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-stats">
+              <div class="card-header card-header-success card-header-icon">
+                <div class="card-icon">
+                  <i class="material-icons">store</i>
+                </div>
+                <p class="card-category">Revenue</p>
+                <h3 class="card-title">$34,245</h3>
+              </div>
+              <div class="card-footer">
+                <div class="stats">
+                  <i class="material-icons">date_range</i> Last 24 Hours
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-stats">
+              <div class="card-header card-header-info card-header-icon">
+                <div class="card-icon">
+                  <i class="fa fa-twitter"></i>
+                </div>
+                <p class="card-category">Followers</p>
+                <h3 class="card-title">+245</h3>
+              </div>
+              <div class="card-footer">
+                <div class="stats">
+                  <i class="material-icons">update</i> Just Updated
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h3>Manage Listings</h3>
+        <br>
+        <div class="row">
+          <div class="col-md-4">
+            <div class="card card-product">
+              <div class="card-header card-header-image" data-header-animation="true">
+                <a href="#pablo">
+                  <img class="img" src="./assets/img/card-2.jpg">
+                </a>
+              </div>
+              <div class="card-body">
+                <div class="card-actions text-center">
+                  <button mat-raised-button type="button" class="btn btn-danger btn-link fix-broken-card">
+                    <i class="material-icons">build</i> Fix Header!
+                  </button>
+                  <button mat-raised-button type="button" class="btn btn-default btn-link" matTooltip="View" [matTooltipPosition]="'below'">
+                    <i class="material-icons">art_track</i>
+                  </button>
+                  <button mat-raised-button type="button" class="btn btn-success btn-link" matTooltip="Edit" [matTooltipPosition]="'below'">
+                    <i class="material-icons">edit</i>
+                  </button>
+                  <button mat-raised-button type="button" class="btn btn-danger btn-link" matTooltip="Remove" [matTooltipPosition]="'below'">
+                    <i class="material-icons">close</i>
+                  </button>
+                </div>
+                <h4 class="card-title">
+                  <a href="#pablo">Cozy 5 Stars Apartment</a>
+                </h4>
+                <div class="card-description">
+                  The place is close to Barceloneta Beach and bus stop just 2 min by walk and near to "Naviglio" where you can enjoy the main night life in Barcelona.
+                </div>
+              </div>
+              <div class="card-footer">
+                <div class="price">
+                  <h4>$899/night</h4>
+                </div>
+                <div class="stats">
+                  <p class="card-category"><i class="material-icons">place</i> Barcelona, Spain</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card card-product">
+              <div class="card-header card-header-image" data-header-animation="true">
+                <a href="#pablo">
+                  <img class="img" src="./assets/img/card-3.jpg">
+                </a>
+              </div>
+              <div class="card-body">
+                <div class="card-actions text-center">
+                  <button mat-raised-button type="button" class="btn btn-danger btn-link fix-broken-card">
+                    <i class="material-icons">build</i> Fix Header!
+                  </button>
+                  <button mat-raised-button type="button" class="btn btn-default btn-link" matTooltip="View" [matTooltipPosition]="'below'">
+                    <i class="material-icons">art_track</i>
+                  </button>
+                  <button mat-raised-button type="button" class="btn btn-success btn-link" matTooltip="Edit" [matTooltipPosition]="'below'">
+                    <i class="material-icons">edit</i>
+                  </button>
+                  <button mat-raised-button type="button" class="btn btn-danger btn-link" matTooltip="Remove" [matTooltipPosition]="'below'">
+                    <i class="material-icons">close</i>
+                  </button>
+                </div>
+                <h4 class="card-title">
+                  <a href="#pablo">Office Studio</a>
+                </h4>
+                <div class="card-description">
+                  The place is close to Metro Station and bus stop just 2 min by walk and near to "Naviglio" where you can enjoy the night life in London, UK.
+                </div>
+              </div>
+              <div class="card-footer">
+                <div class="price">
+                  <h4>$1.119/night</h4>
+                </div>
+                <div class="stats">
+                  <p class="card-category"><i class="material-icons">place</i> London, UK</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="card card-product">
+              <div class="card-header card-header-image" data-header-animation="true">
+                <a href="#pablo">
+                  <img class="img" src="./assets/img/card-1.jpg">
+                </a>
+              </div>
+              <div class="card-body">
+                <div class="card-actions text-center">
+                  <button mat-raised-button type="button" class="btn btn-danger btn-link fix-broken-card">
+                    <i class="material-icons">build</i> Fix Header!
+                  </button>
+                  <button mat-raised-button type="button" class="btn btn-default btn-link" matTooltip="View" [matTooltipPosition]="'below'">
+                    <i class="material-icons">art_track</i>
+                  </button>
+                  <button mat-raised-button type="button" class="btn btn-success btn-link" matTooltip="Edit" [matTooltipPosition]="'below'">
+                    <i class="material-icons">edit</i>
+                  </button>
+                  <button mat-raised-button type="button" class="btn btn-danger btn-link" matTooltip="Remove" [matTooltipPosition]="'below'">
+                    <i class="material-icons">close</i>
+                  </button>
+                </div>
+                <h4 class="card-title">
+                  <a href="#pablo">Beautiful Castle</a>
+                </h4>
+                <div class="card-description">
+                  The place is close to Metro Station and bus stop just 2 min by walk and near to "Naviglio" where you can enjoy the main night life in Milan.
+                </div>
+              </div>
+              <div class="card-footer">
+                <div class="price">
+                  <h4>$459/night</h4>
+                </div>
+                <div class="stats">
+                  <p class="card-category"><i class="material-icons">place</i> Milan, Italy</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>-->
+    </div>
+</div>

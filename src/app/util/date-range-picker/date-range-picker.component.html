@@ -1,0 +1,6 @@
+<mat-form-field [ngClass]="{'range':!singleDatePicker}">
+  <input #dateRangePicker matInput  type="text" placeholder="选择日期" name="daterange" autocomplete="off" [disabled]="disabled">
+  <button mat-button  matSuffix mat-icon-button aria-label="Clear">
+    <mat-icon>date_range</mat-icon>
+  </button>
+</mat-form-field>

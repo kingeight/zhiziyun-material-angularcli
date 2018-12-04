@@ -1,0 +1,197 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="wizard-container">
+          <div class="card">
+            <app-full-screen></app-full-screen>
+            <div appMyWizard (next)="onNext($event)" class="card-body card-wizard" data-color="rose" id="wizardProfile">
+              <form [formGroup]="formType" action="" method="" class="form-horizontal">
+                <div class="card-header text-center">
+                  <h3 class="card-title">
+                    新建到店人群
+                  </h3>
+                </div>
+                <div class="wizard-navigation">
+                  <ul class="nav nav-pills">
+                    <li class="nav-item">
+                      <a class="nav-link active" href="#basic" data-toggle="tab" role="tab">
+                        基本属性
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#tags" data-toggle="tab" role="tab">
+                        选择标签
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="card-body">
+                  <div class="tab-content">
+                    <div class="tab-pane active" id="basic">
+                      <h5 class="info-text">请为人群选择探针、时间等基础筛选条件</h5>
+                      <div class="row justify-content-center">
+                        <div class="input-group">
+                          <label class="col-md-2 text-right">选择探针</label>
+                          <div class="col-md-10">
+                            <div class="form-check form-check-inline" *ngFor="let probe of probes; let i = index"
+                                 formArrayName="selectedProbes">
+                              <mat-checkbox [value]="probe.mac" [formControlName]="i">
+                                {{probe.name+(probe.history?'(已解绑)':'')}}
+                              </mat-checkbox>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="input-group">
+                          <label class="col-md-2 text-right">访客类型</label>
+                          <div class="col-md-10">
+                            <mat-radio-group formControlName="selectedVisitorType">
+                              <mat-radio-button *ngFor="let visitorType of visitorTypes" class="radio-padding"
+                                                [value]="visitorType.value">
+                                {{visitorType.name}}
+                              </mat-radio-button>
+                            </mat-radio-group>
+                          </div>
+                        </div>
+                        <div class="input-group" *ngIf="formType.get('selectedVisitorType').value==0">
+                          <label class="col-md-2 text-right">用户活跃度<i class="material-icons"
+                                                                     matTooltip="不选则表示选择所有老访客">info</i></label>
+                          <div class="col-md-10">
+                            <div class="form-check form-check-inline" *ngFor="let activity of activities; let i = index"
+                                 formArrayName="selectedActivity">
+                              <mat-checkbox [value]="activity.vale" [formControlName]="i">
+                                {{activity.name}}
+                              </mat-checkbox>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="input-group">
+                          <label class="col-md-2 col-form-label">时间范围</label>
+                          <div class="col-md-10">
+                            <app-date-range-picker [singleDatePicker]="false" [format]="'YYYY-MM-DD HH:mm:ss'"
+                                                   [timePicker]="true"
+                                                   [(date)]="selectedDate" [showRanges]="true"></app-date-range-picker>
+                          </div>
+                        </div>
+                        <div class="input-group">
+                          <label class="col-md-2 col-form-label">名称</label>
+                          <div class="col-md-10">
+                            <mat-form-field>
+                              <input matInput placeholder="必填，最少3个字符" formControlName="name" name="name" type="text">
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div class="input-group">
+                          <label class="col-md-2 col-form-label">最远探测距离(米)<i class="material-icons"
+                                                                             matTooltip="不填或者填0表示不限">info</i></label>
+                          <div class="col-md-10">
+                            <mat-form-field>
+                              <input matInput placeholder="最大100" formControlName="distance" name="distance"
+                                     type="number">
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div class="input-group">
+                          <label class="col-md-2 text-right">操作系统<i class="material-icons" matTooltip="不选表示不限">info</i></label>
+                          <div class="col-md-10">
+                            <div class="form-check form-check-inline" *ngFor="let os of oses;let i = index"
+                                 formArrayName="selectedOs">
+                              <mat-checkbox [value]="os.value" [formControlName]="i">
+                                {{os.name}}
+                              </mat-checkbox>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="input-group">
+                          <label class="col-md-2 text-right">手机品牌<i class="material-icons" matTooltip="不选表示不限">info</i></label>
+                          <div class="col-md-10">
+                            <div [ngClass]="{'form-check form-check-inline':brandShow(i)}"
+                                 *ngFor="let brand of phoneBrands;let i =index " formArrayName="selectedBrand">
+                              <mat-checkbox [value]="brand.value" [formControlName]="i" *ngIf="brandShow(i)">
+                                {{brand.name}}
+                              </mat-checkbox>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="input-group">
+                          <label class="col-md-2 text-right">停留时长(分)<i class="material-icons"
+                                                                    matTooltip="上限和下限均可不填">info</i></label>
+                          <div class="col-md-10">
+                            <mat-radio-group formControlName="selectedStayDuration">
+                              <mat-radio-button class="radio-padding" [value]="0">不限</mat-radio-button>
+                              <mat-radio-button class="radio-padding" [value]="1">自定义</mat-radio-button>
+                            </mat-radio-group>
+                            <div *ngIf="formType.get('selectedStayDuration').value===1" class="form-inline">
+                              <div class="form-group">
+                                <mat-form-field>
+                                  <input matInput placeholder="下限值，可不填" formControlName="minStayDuration" name="minStayDuration"
+                                         type="number">
+                                </mat-form-field>
+                              </div>
+                              <mat-divider [vertical]="true" style="width:10px"></mat-divider>
+                              <div class="form-group">
+                                <mat-form-field>
+                                  <input matInput placeholder="上限值,最大1440(1整天)可不填" formControlName="maxStayDuration" name="maxStayDuration"
+                                         type="number">
+                                </mat-form-field>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="input-group">
+                          <label class="col-md-2 col-form-label">备注</label>
+                          <div class="col-md-10">
+                            <mat-form-field>
+                              <input matInput formControlName="description" name="description" type="text">
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane" id="tags">
+                      <h5 class="info-text">请为人群选择标签条件，不选则表示不限制</h5>
+                      <div class="row justify-content-center">
+                        <div class="input-group" *ngFor="let tag of filtedTags">
+                          <label class="col-md-2 text-right">{{tag.name}}</label>
+                          <div class="col-md-10">
+                            <div class="form-check form-check-inline" *ngFor="let childTag of filteTags(tag.children)">
+                              <mat-checkbox [value]="childTag.id" [indeterminate]="childrenChecked(childTag)" (change)="onTagCheckChange($event)">
+                                {{childTag.name}}
+                              </mat-checkbox>
+                              <ng-container *ngIf="childTag.children.length>0">
+                                <i class="material-icons" [matMenuTriggerFor]="menu">add</i>
+                                <mat-menu #menu="matMenu" class="card-body">
+                                  <div class="form-check form-check-inline" *ngFor="let childChildTag of childTag.children">
+                                    <mat-checkbox [value]="childChildTag.id" (click)="stopPropagation($event)" (change)="onTagCheckChange($event)">
+                                      {{childChildTag.name}}
+                                    </mat-checkbox>
+                                  </div>
+                                </mat-menu>
+                              </ng-container>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <div class="mr-auto">
+                    <input type="button" class="btn btn-previous btn-fill btn-default btn-wd disabled" name="previous"
+                           value="上一步">
+                  </div>
+                  <div class="ml-auto">
+                    <input type="button" class="btn btn-next btn-fill btn-rose btn-wd" name="next" value="下一步">
+                    <input type="button" (click)="addSegment()" class="btn btn-finish btn-fill btn-rose btn-wd" name="finish" value="完成"
+                           style="display: none;">
+                  </div>
+                  <div class="clearfix"></div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

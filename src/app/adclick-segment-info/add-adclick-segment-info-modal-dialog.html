@@ -1,0 +1,66 @@
+<h4 mat-dialog-title>新建广告人群</h4>
+<div mat-dialog-content>
+  <p>请从底部活动列表点选计划，最多支持10个计划</p>
+  <form class="form-horizontal" #addAdclickSegmentInfoModalDialog="ngForm">
+    <div class="row">
+      <div class="input-group">
+        <label class="col-md-3 col-form-label">名称</label>
+        <div class="col-md-9 col-9">
+          <mat-form-field class="example-full-width">
+            <input matInput type="text" required [(ngModel)]="name" name="name">
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="input-group">
+        <label class="col-md-3 col-form-label">时间范围<i class="material-icons"
+                                                            matTooltip="最早可以选择90天内的时间">info</i></label>
+        <div class="col-md-9 ">
+          <app-date-range-picker [singleDatePicker]="false" [format]="'YYYY-MM-DD'"
+                                 [timePicker]="false"
+                                 [(date)]="selectedDate" [showRanges]="true" [minDate]="minDate"></app-date-range-picker>
+        </div>
+      </div>
+      <div class="input-group">
+        <div class="col-md-12">
+          <mat-chip-list>
+            <mat-chip color="rose" [removable]="true" (removed)="removePlan(plan)" *ngFor="let plan of selectedPlan">{{plan.name}}
+              <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+          </mat-chip-list>
+        </div>
+      </div>
+      <div class="input-group">
+        <div class="col-md-12">
+          <mat-form-field>
+            <input matInput type="text" placeholder="输入活动名称搜索" [(ngModel)]="searchText" name="searchText">
+            <button mat-button matSuffix mat-icon-button aria-label="搜索" (click)="searchActivity()">
+              <mat-icon>search</mat-icon>
+            </button>
+          </mat-form-field>
+          <mat-accordion>
+            <mat-expansion-panel *ngFor="let activity of activites" (opened)="expandActivity(activity)">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  {{activity.name}}
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+              <p *ngIf="activity['plans']&&activity['plans'].length===0">无可选计划</p>
+              <div class="form-check form-check-inline" *ngFor="let plan of activity['plans']; ">
+                <mat-checkbox [value]="plan" (change)="onTagCheckChange($event)" [checked]="tagChecked(plan)">
+                  {{plan.name}}
+                </mat-checkbox>
+              </div>
+            </mat-expansion-panel>
+          </mat-accordion>
+          <a href="javascript:;" (click)="showMore()">点击加载更多活动</a>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button class="btn btn-danger" mat-dialog-close>取消</button>
+  <button mat-button class="btn btn-success" (click)="save()" cdkFocusInitial
+          [disabled]="!addAdclickSegmentInfoModalDialog.form.valid">确定
+  </button>
+</div>

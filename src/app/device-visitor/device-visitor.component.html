@@ -1,0 +1,132 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card">
+          <app-full-screen></app-full-screen>
+          <div class="card-body ">
+            <form class="form-inline form-row">
+              <div class="form-group input-group col-12">
+                <app-date-range-picker [singleDatePicker]="false" [timePicker]="true" [format]="'YYYY-MM-DD HH:mm:ss'"
+                                       [(date)]="selectedDate"
+                                       (dateChange)="timeChange()" [showRanges]="true"></app-date-range-picker>
+              </div>
+              <div class="form-group input-group col-12">
+                <mat-form-field>
+                  <mat-select placeholder="选择门店" [(value)]="selectedStore" (selectionChange)="storeChange()">
+                    <mat-option *ngFor="let store of stores" [value]="store.id">
+                      {{store.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="form-group input-group col-12">
+                <mat-form-field>
+                  <mat-select placeholder="选择探针" [(value)]="selectedProbe" (selectionChange)="probeChange()">
+                    <mat-option *ngFor="let probe of probes | filterProbeByStore:selectedStore" [value]="probe.mac">
+                      {{probe.name}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="form-group input-group col-12">
+                <mat-form-field class="example-form-field">
+                  <input matInput type="text" placeholder="输入完整MAC地址搜索" name="searchText" [(ngModel)]="searchMac">
+                </mat-form-field>
+                <div class="input-group-append">
+                  <button mat-flat-button class="btn btn-primary" aria-label="Clear" (click)="search()">
+                    搜索
+                  </button>
+                </div>
+              </div>
+            </form>
+            <div class="row">
+              <div class="col-md-12 col-12">
+                <!--基于百度地图的探针地图-->
+                <app-baidu-map-rect [points]="points"></app-baidu-map-rect>
+                <!--雷达-->
+                <div class="radar-wrap">
+                  <div class="radar" id="radar">
+                    <div class="cross-section"></div>
+                    <div class="spinner"></div>
+                  </div>
+                </div>
+                <!--滚动-->
+                <div class="slider-on-map">
+                  <ul>
+                    <li *ngFor="let item of this.sliderItems" [@shrinkOut]="'in'">
+                      <p><a href="javascript:;" (click)="showVisitorDetailModalDialog(item.mac,item)"><strong>{{item.mac}}</strong></a>&nbsp;&nbsp;{{item.range}}</p>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-12">
+                <button mat-button (click)="download()" class="pull-right">
+                  <i class="fa fa-download"></i>
+                  下载数据
+                </button>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table mat-table [dataSource]="deviceVisitors" class="table">
+                <ng-container matColumnDef="storeName">
+                  <th mat-header-cell *matHeaderCellDef>所属门店</th>
+                  <td mat-cell *matCellDef="let item"> {{item.storeName}}</td>
+                </ng-container>
+                <ng-container matColumnDef="probeName">
+                  <th mat-header-cell *matHeaderCellDef>所属探针</th>
+                  <td mat-cell *matCellDef="let item"> {{item.probeName}}</td>
+                </ng-container>
+                <ng-container matColumnDef="mac">
+                  <th mat-header-cell *matHeaderCellDef>访客识别号(MAC)</th>
+                  <td mat-cell *matCellDef="let item"> <a href="javascript:;" (click)="showVisitorDetailModalDialog(item.mac,item)">{{item.mac}}</a></td>
+                </ng-container>
+                <ng-container matColumnDef="is_new">
+                  <th mat-header-cell *matHeaderCellDef>是否新访客</th>
+                  <td mat-cell *matCellDef="let item"> {{item.is_new? '是' : '否'}}</td>
+                </ng-container>
+                <ng-container matColumnDef="brand">
+                  <th mat-header-cell *matHeaderCellDef>品牌</th>
+                  <td mat-cell *matCellDef="let item"> {{item.brand}}</td>
+                </ng-container>
+                <ng-container matColumnDef="visittime">
+                  <th mat-header-cell *matHeaderCellDef>最近探测时间</th>
+                  <td mat-cell *matCellDef="let item"> {{item.visittime}}</td>
+                </ng-container>
+                <ng-container matColumnDef="range">
+                  <th mat-header-cell *matHeaderCellDef>距离</th>
+                  <td mat-cell *matCellDef="let item"> {{item.range}}</td>
+                </ng-container>
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef>
+                    <i class="material-icons">
+                      settings
+                    </i>
+                  </th>
+                  <td mat-cell *matCellDef="let item;let i=index;">
+                    <a href="javascript:;" (click)="showVisitorDetailModalDialog(item.mac,item)">查看</a>
+                  </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+              <mat-paginator [length]="total"
+                             [pageIndex]="page"
+                             [pageSize]="rows"
+                             [pageSizeOptions]="[10, 20, 50]"
+                             [showFirstLastButtons]="true"
+                             (page)="getTableList($event)">
+              </mat-paginator>
+            </div>
+          </div>
+        </div>
+      </div>
+      <form style="display:none" id='exportExcel' target='_blank' method='post'
+            action='deviceVisit/export.action'>
+        <input name='data' />
+      </form>
+    </div>
+  </div>
+</div>

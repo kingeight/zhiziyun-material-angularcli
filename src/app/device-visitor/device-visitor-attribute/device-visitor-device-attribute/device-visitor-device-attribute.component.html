@@ -1,0 +1,60 @@
+<div class="wrap">
+  <form class="form-inline form-row">
+    <div class="form-group input-group col-12">
+      <app-date-range-picker [singleDatePicker]="false" [format]="'YYYY-MM-DD'"
+                             [(date)]="selectedDate" [showRanges]="true"></app-date-range-picker>
+    </div>
+    <div class="form-group input-group col-12">
+      <mat-form-field>
+        <mat-select placeholder="选择门店" [(value)]="selectedStore">
+          <mat-option *ngFor="let store of stores" [value]="store.id">
+            {{store.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="form-group input-group col-12">
+      <mat-form-field>
+        <mat-select placeholder="选择探针" [(value)]="selectedProbe">
+          <mat-option *ngFor="let probe of probes | filterProbeByStore:selectedStore" [value]="probe.id">
+            {{probe.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="form-group input-group col-12">
+      <button mat-flat-button class="btn btn-primary" aria-label="Clear" (click)="search()">
+        查询
+      </button>
+    </div>
+  </form>
+  <div class="row">
+    <div class="col-md-12 ml-auto mr-auto">
+      <div style="min-height:200px;height:400px;" *ngIf="brandPieChartLabels.length>0">
+        <canvas baseChart
+                [data]="brandPieChartData"
+                [labels]="brandPieChartLabels"
+                [options]="brandPieChartOptions"
+                chartType="pie"></canvas>
+      </div>
+    </div>
+    <div class="col-md-12 ml-auto mr-auto">
+      <div style="min-height:200px;height:400px;" *ngIf="modelPieChartLabels.length>0">
+        <canvas baseChart
+                [data]="modelPieChartData"
+                [labels]="modelPieChartLabels"
+                [options]="modelPieChartOptions"
+                chartType="pie"></canvas>
+      </div>
+    </div>
+    <div class="col-md-12 ml-auto mr-auto">
+      <div style="min-height:200px;height:400px;" *ngIf="pricePieChartLabels.length>0">
+        <canvas baseChart
+                [data]="pricePieChartData"
+                [labels]="pricePieChartLabels"
+                [options]="pricePieChartOptions"
+                chartType="pie"></canvas>
+      </div>
+    </div>
+  </div>
+</div>

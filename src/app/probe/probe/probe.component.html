@@ -1,0 +1,104 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card">
+          <app-full-screen></app-full-screen>
+          <div class="card-body ">
+            <form class="form-inline form-row">
+              <div class="form-group input-group col-12">
+                  <mat-form-field>
+                    <mat-select placeholder="接入状态" [(value)]="selectedDockedStatus" (selectionChange)="searchProbe()">
+                      <mat-option *ngFor="let status of dockedStatus" [value]="status.value">
+                        {{status.text}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+              </div>
+              <div class="form-group input-group col-12">
+                <mat-form-field class="example-form-field">
+                  <input matInput type="text" placeholder="输入名称搜索" name="searchText" [(ngModel)]="searchText">
+                </mat-form-field>
+                <div class="input-group-append">
+                  <button mat-flat-button  class="btn btn-primary"  aria-label="Clear" (click)="searchProbe()">
+                    搜索
+                  </button>
+                </div>
+              </div>
+              <div class="form-group input-group col-12">
+                <button mat-button class="btn btn-success" (click)="openAddProbeDialog()">绑定探针</button>
+              </div>
+            </form>
+            <div class="table-responsive">
+              <table mat-table [dataSource]="probeList" class="table">
+                <ng-container matColumnDef="name">
+                  <th mat-header-cell *matHeaderCellDef>名称</th>
+                  <td mat-cell *matCellDef="let item"> {{item.name}}</td>
+                </ng-container>
+                <ng-container matColumnDef="mac">
+                  <th mat-header-cell *matHeaderCellDef>探针识别码</th>
+                  <td mat-cell *matCellDef="let item"> {{item.mac}}</td>
+                </ng-container>
+                <ng-container matColumnDef="docked">
+                  <th mat-header-cell *matHeaderCellDef>是否已接入</th>
+                  <td mat-cell *matCellDef="let item;let i = index">
+                    {{item.valid===false?'已过期,请续费':''}}
+                    <div class="togglebutton" *ngIf="item.valid!=false">
+                      <label>
+                        <input type="checkbox" [(ngModel)]="item.docked" (click)="toggleStatus(item,i)">
+                        <span class="toggle"></span>
+                        {{item.docked?'是':'否'}}
+                      </label>
+                    </div>
+                  </td>
+                </ng-container>
+                <ng-container matColumnDef="active">
+                  <th mat-header-cell *matHeaderCellDef>状态</th>
+                  <td mat-cell *matCellDef="let item"> {{item.active? '在线' : '离线'}}</td>
+                </ng-container>
+                <ng-container matColumnDef="radius">
+                  <th mat-header-cell *matHeaderCellDef>覆盖半径(米)</th>
+                  <td mat-cell *matCellDef="let item"> {{item.radius|number:'1.0-0'}}</td>
+                </ng-container>
+                <ng-container matColumnDef="bindTime">
+                  <th mat-header-cell *matHeaderCellDef>绑定时间</th>
+                  <td mat-cell *matCellDef="let item"> {{item.bindTime}}</td>
+                </ng-container>
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef>
+                    <i class="material-icons">
+                      settings
+                    </i>
+                  </th>
+                  <td mat-cell *matCellDef="let item;let i=index;">
+                    <a href="javascript:;" (click)="showProbeRadarDialog(item)">雷达图</a>&nbsp;&nbsp;
+                    <a  href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">操作
+                      <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-left">
+                      <li mat-menu-item *ngIf="!item.docked">
+                        <a href="javascript:;" (click)="openEditProbeDialog(i)">修改</a>
+                      </li>
+                      <li mat-menu-item>
+                        <a href="javascript:;" (click)="delProbe(item.id)">解绑</a>
+                      </li>
+                    </ul>
+                  </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+              <mat-paginator [length]="total"
+                             [pageIndex]="page"
+                             [pageSize]="rows"
+                             [pageSizeOptions]="[10, 20, 50]"
+                             [showFirstLastButtons]="true"
+                             (page)="getProbeList($event)">
+              </mat-paginator>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

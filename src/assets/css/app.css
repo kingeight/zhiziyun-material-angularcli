@@ -1,0 +1,97 @@
+.container-fluid > .row > .col-sm-12 > .card{
+    margin-top:0;
+}
+.sidebar-mini .sidebar .show{display:none;}
+.sidebar-mini .sidebar:hover .show{display:block;}
+@media screen and (max-width:767px){
+    .table-responsive th,.table-responsive td{
+        word-break:keep-all;
+        white-space: nowrap;
+    }
+}
+.mat-cell, .mat-footer-cell{
+    font-size:.875rem !important;
+    line-height: 1.52857;
+    color:#3C4858 !important;
+}
+.table .dropdown-menu .dropdown-item,.table .dropdown-menu li > a{
+    font-size:.875rem !important;
+}
+tr.mat-header-row,tr.mat-footer-row, tr.mat-row{
+    height:auto !important;
+}
+.mat-dialog-content .col-form-label{
+    padding: 16px 15px 0 0 ;
+    text-align: right;
+}
+.table-responsive .table{
+    border:1px solid rgba(0,0,0,.06);
+}
+.form-group .mat-form-field-appearance-legacy .mat-form-field-wrapper{
+    padding-bottom:0;
+}
+.form-group .mat-form-field-appearance-legacy .mat-form-field-infix{
+    border:none;
+    padding: .5375em 0;
+}
+.form-group .mat-form-field-appearance-legacy .mat-form-field-label{
+    color:rgba(0, 0, 0, 0.37);
+    top:1.48125em;
+}
+.form-group .mat-form-field-appearance-legacy .mat-form-field-underline{
+    bottom:0;
+    background-color: #d2d2d2;
+}
+.form-group .mat-select-trigger,.form-group .mat-option,.form-group input.mat-input-element{
+    font-size:inherit;
+    height:1.425em;
+    line-height:1.425em;
+}
+.input-group-append button{
+    min-width:unset;
+}
+
+.daterangepicker .calendar-time{
+    line-height:1.125em !important;
+}
+.daterangepicker select.hourselect, .daterangepicker select.minuteselect,
+.daterangepicker select.secondselect, .daterangepicker select.ampmselect{
+    width: auto !important;
+}
+.cdk-overlay-connected-position-bounding-box{
+    z-index:9999 !important;
+}
+p .material-icons{
+    vertical-align: middle;
+}
+.mat-tab-body-content .wrap{
+    padding:10px 0;
+}
+.sidebar-mini.grandson{
+    width:20px !important;
+    margin-right:0 !important;
+}
+.form-horizontal .input-group{
+    margin-bottom: 15px;
+}
+.input-group label .material-icons{
+    font-size:inherit;
+    vertical-align: middle;
+}
+.mat-radio-disabled .mat-radio-outer-circle{
+    border-color:rgba(0,0,0,.38) !important;
+}
+
+.mat-radio-disabled .mat-radio-inner-circle, .mat-radio-disabled .mat-radio-ripple .mat-ripple-element{
+    background-color:rgba(0,0,0,.38) !important;
+}
+.breadcrumb{
+    background-color: transparent !important;
+    margin: 0 !important;
+}
+button.mat-button.btn, button.mat-raised-button.btn, button.mat-raised-button.btn:not([class*=mat-elevation-z]), button.btn{
+    border-radius:2px;
+}
+.mat-dialog-content{
+    font-size:14px;
+}

@@ -1,0 +1,32 @@
+<h4 mat-dialog-title>编辑门店</h4>
+<div mat-dialog-content>
+    <form   class="form-horizontal" #editStoreModalDialog="ngForm">
+        <div class="row">
+            <label class="col-md-3 col-2 col-form-label">名称</label>
+            <div class="col-md-9 col-9">
+                <mat-form-field  class="example-full-width">
+                    <input matInput type="text" required [(ngModel)]="store.name" name="name">
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-md-3 col-2 col-form-label">地理位置</label>
+
+            <div class="col-md-9 col-9">
+                <div class="form-group input-group">
+                    <input type="text" class="form-control" placeholder="输入地理位置搜索"
+                           aria-label="地理位置" [(ngModel)]="searchText" name="searchText" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <button mat-button (click)="search()" class="btn  btn-primary" type="button">搜索</button>
+                    </div>
+                </div>
+                <app-baidu-map [point]="point" [keywords]="searchText2" [scaleSupported]="true" class="container-fluid resizable" style="height:400px;width:100%;padding:0;">
+                </app-baidu-map>
+            </div>
+        </div>
+    </form>
+</div>
+<div mat-dialog-actions align="end">
+    <button mat-button class="btn btn-danger" mat-dialog-close>取消</button>
+    <button mat-button class="btn btn-success" (click)="save()"  cdkFocusInitial [disabled]="!editStoreModalDialog.form.valid">确定</button>
+</div>

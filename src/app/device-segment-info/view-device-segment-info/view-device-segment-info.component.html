@@ -1,0 +1,194 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="wizard-container">
+          <div class="card">
+            <app-full-screen></app-full-screen>
+            <div appMyWizard  class="card-body card-wizard" data-color="rose" id="wizardProfile">
+              <form  action="" method="" class="form-horizontal">
+                <div class="card-header text-center">
+                  <h3 class="card-title">
+                    查看到店人群
+                  </h3>
+                </div>
+                <div class="wizard-navigation">
+                  <ul class="nav nav-pills">
+                    <li class="nav-item">
+                      <a class="nav-link active" href="#basic" data-toggle="tab" role="tab">
+                        基本属性
+                      </a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#tags" data-toggle="tab" role="tab">
+                        选择标签
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="card-body">
+                  <div class="tab-content">
+                    <div class="tab-pane active" id="basic">
+                      <h5 class="info-text">请为人群选择探针、时间等基础筛选条件</h5>
+                      <div class="row justify-content-center">
+                        <div class="input-group">
+                          <label class="col-md-2 text-right">选择探针</label>
+                          <div class="col-md-10">
+                            <div class="form-check form-check-inline" *ngFor="let probe of probes">
+                              <mat-checkbox [value]="probe.mac" [checked]="probeChecked(probe.mac)" [disabled]="true">
+                                {{probe.name+(probe.history?'(已解绑)':'')}}
+                              </mat-checkbox>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="input-group">
+                          <label class="col-md-2 text-right">访客类型</label>
+                          <div class="col-md-10">
+                            <mat-radio-group [disabled]="true">
+                              <mat-radio-button *ngFor="let visitorType of visitorTypes" class="radio-padding"
+                                                [value]="visitorType.value" [checked]="visitorTypeChecked(visitorType.value)" [disabled]="true">
+                                {{visitorType.name}}
+                              </mat-radio-button>
+                            </mat-radio-group>
+                          </div>
+                        </div>
+                        <div class="input-group" *ngIf="segment['visitorType']===0">
+                          <label class="col-md-2 text-right">用户活跃度<i class="material-icons"
+                                                                     matTooltip="不选则表示选择所有老访客">info</i></label>
+                          <div class="col-md-10">
+                            <div class="form-check form-check-inline" *ngFor="let activity of activities">
+                              <mat-checkbox [value]="activity.vale" [checked]="activityChecked(activity.value)" [disabled]="true">
+                                {{activity.name}}
+                              </mat-checkbox>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="input-group">
+                          <label class="col-md-2 col-form-label">时间范围</label>
+                          <div class="col-md-10">
+                            <app-date-range-picker [disabled]="true" [singleDatePicker]="false" [format]="'YYYY-MM-DD HH:mm:ss'"
+                                                   [timePicker]="true"
+                                                   [(date)]="selectedDate" [showRanges]="true"></app-date-range-picker>
+                          </div>
+                        </div>
+                        <div class="input-group">
+                          <label class="col-md-2 col-form-label">名称</label>
+                          <div class="col-md-10">
+                            <mat-form-field>
+                              <input matInput [disabled]="true" placeholder="必填，最少3个字符" [value]="segment['name']" name="name" type="text">
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div class="input-group">
+                          <label class="col-md-2 col-form-label">最远探测距离(米)<i class="material-icons"
+                                                                             matTooltip="不填或者填0表示不限">info</i></label>
+                          <div class="col-md-10">
+                            <mat-form-field>
+                              <input matInput placeholder="最大100" [disabled]="true" [value]="segment['probeDistance']" name="distance"
+                                     type="number">
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div class="input-group">
+                          <label class="col-md-2 text-right">操作系统<i class="material-icons" matTooltip="不选表示不限">info</i></label>
+                          <div class="col-md-10">
+                            <div class="form-check form-check-inline" *ngFor="let os of oses">
+                              <mat-checkbox [value]="os.value" [checked]="osChecked(os.value)" [disabled]="true">
+                                {{os.name}}
+                              </mat-checkbox>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="input-group">
+                          <label class="col-md-2 text-right">手机品牌<i class="material-icons" matTooltip="不选表示不限">info</i></label>
+                          <div class="col-md-10">
+                            <div [ngClass]="{'form-check form-check-inline':brandShow(brand.type)}"
+                                 *ngFor="let brand of phoneBrands;">
+                              <mat-checkbox [value]="brand.value"  *ngIf="brandShow(brand.type)" [checked]="brandChecked(brand.value)" [disabled]="true">
+                                {{brand.name}}
+                              </mat-checkbox>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="input-group">
+                          <label class="col-md-2 text-right">停留时长(分)<i class="material-icons"
+                                                                       matTooltip="上限和下限均可不填">info</i></label>
+                          <div class="col-md-10">
+                            <mat-radio-group>
+                              <mat-radio-button class="radio-padding" [checked]="selectedStayDuration===0" [value]="0" [disabled]="true">不限</mat-radio-button>
+                              <mat-radio-button class="radio-padding" [checked]="selectedStayDuration===1" [value]="1" [disabled]="true">自定义</mat-radio-button>
+                            </mat-radio-group>
+                            <div *ngIf="selectedStayDuration===1" class="form-inline">
+                              <div class="form-group">
+                                <mat-form-field>
+                                  <input matInput placeholder="下限值，可不填" [value]="minStayDuration" name="minStayDuration"
+                                         type="number" [disabled]="true">
+                                </mat-form-field>
+                              </div>
+                              <mat-divider [vertical]="true" style="width:10px"></mat-divider>
+                              <div class="form-group">
+                                <mat-form-field>
+                                  <input matInput placeholder="上限值,最大1440(1整天)可不填" [value]="maxStayDuration" name="maxStayDuration"
+                                         type="number" [disabled]="true">
+                                </mat-form-field>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="input-group">
+                          <label class="col-md-2 col-form-label">备注</label>
+                          <div class="col-md-10">
+                            <mat-form-field>
+                              <input matInput [value]="segment['description']" name="description" type="text" [disabled]="true">
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="tab-pane" id="tags">
+                      <h5 class="info-text">请为人群选择标签条件，不选则表示不限制</h5>
+                      <div class="row justify-content-center">
+                        <div class="input-group" *ngFor="let tag of filtedTags">
+                          <label class="col-md-2 text-right">{{tag.name}}</label>
+                          <div class="col-md-10">
+                            <div class="form-check form-check-inline" *ngFor="let childTag of filteTags(tag.children)">
+                              <mat-checkbox [value]="childTag.id" [checked]="tagChecked(childTag.id)" [disabled]="true">
+                                {{childTag.name}}
+                              </mat-checkbox>
+                              <ng-container *ngIf="childTag.children.length>0">
+                                <i class="material-icons" [matMenuTriggerFor]="menu">add</i>
+                                <mat-menu #menu="matMenu" class="card-body">
+                                  <div class="form-check form-check-inline" *ngFor="let childChildTag of childTag.children">
+                                    <mat-checkbox [value]="childChildTag.id" (click)="stopPropagation($event)" [checked]="tagChecked(childChildTag.id)" [disabled]="true">
+                                      {{childChildTag.name}}
+                                    </mat-checkbox>
+                                  </div>
+                                </mat-menu>
+                              </ng-container>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <div class="mr-auto">
+                    <input type="button" class="btn btn-previous btn-fill btn-default btn-wd disabled" name="previous"
+                           value="上一步">
+                  </div>
+                  <div class="ml-auto">
+                    <input type="button" class="btn btn-next btn-fill btn-rose btn-wd" name="next" value="下一步">
+                    <input type="button" (click)="finish()" class="btn btn-finish btn-fill btn-rose btn-wd" name="finish" value="完成"
+                           style="display: none;">
+                  </div>
+                  <div class="clearfix"></div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

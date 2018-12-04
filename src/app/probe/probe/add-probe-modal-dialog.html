@@ -1,0 +1,66 @@
+<h4 mat-dialog-title>绑定探针</h4>
+<div mat-dialog-content>
+    <form class="form-horizontal" #editProbeModalDialog="ngForm">
+        <div class="row">
+            <label class="col-md-3 col-2 col-form-label">名称</label>
+            <div class="col-md-9 col-9">
+                <mat-form-field class="example-full-width">
+                    <input #name="ngModel" matInput type="text" required [(ngModel)]="probe.name" name="name">
+                    <mat-error *ngIf="name.hasError('required')">
+                        名称<strong>必填</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-md-3 col-2 col-form-label">识别码</label>
+            <div class="col-md-9 col-9">
+                <mat-form-field class="example-full-width">
+                    <input matInput type="text" #mac="ngModel" required [(ngModel)]="probe.mac" name="mac" minlength="12" maxlength="12">
+                    <mat-error *ngIf="mac.hasError('required')">
+                        识别码<strong>必填</strong>
+                    </mat-error>
+                    <mat-error *ngIf="mac.hasError('minlength')||mac.hasError('maxlength')">
+                        识别码长度为<strong>12</strong>位
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-md-3 col-2 col-form-label">确认识别码</label>
+            <div class="col-md-9 col-9">
+                <mat-form-field class="example-full-width">
+                    <input matInput [errorStateMatcher]="confirmMatcher" type="text" #confirmMac="ngModel" required [(ngModel)]="probe.confirmMac" name="confirmMac" >
+                    <mat-error>识别码不一致</mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-md-3 col-2 col-form-label">覆盖半径(米)</label>
+            <div class="col-md-9 col-9">
+                <mat-form-field class="example-full-width">
+                    <input matInput [errorStateMatcher]="minMatcher" min="3" #radius="ngModel"
+                           [(ngModel)]="probe.radius"
+                           type="number" required placeholder="最小3米最大100米" name="radius">
+                    <mat-error>覆盖半径范围为3到100米</mat-error>
+                    <mat-hint align="start" *ngIf="probe.radius>2 && probe.radius<101">预测覆盖面积:{{Math.PI*probe.radius*probe.radius|number:'1.0-2'}}平方米</mat-hint>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-md-3 col-2 col-form-label">地理位置</label>
+
+            <div class="col-md-9 col-9">
+                <app-baidu-map [point]="point" [keywords]="searchText2" [scaleSupported]="false"
+                               class="container-fluid resizable" style="height:400px;width:100%;padding:0;">
+                </app-baidu-map>
+            </div>
+        </div>
+    </form>
+</div>
+<div mat-dialog-actions align="end">
+    <button mat-button class="btn btn-danger" mat-dialog-close>取消</button>
+    <button mat-button class="btn btn-success" (click)="save()" cdkFocusInitial
+            [disabled]="!editProbeModalDialog.form.valid||!editProbeModalDialog.form.dirty">确定
+    </button>
+</div>

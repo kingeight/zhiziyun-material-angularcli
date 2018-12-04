@@ -1,0 +1,23 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card">
+          <app-full-screen></app-full-screen>
+          <div class="card-body ">
+            <mat-tab-group dynamicHeight (selectedIndexChange)="tabChange($event)">
+              <mat-tab label="新老访客" >
+                <app-device-visitor-type-report-by-type [stores]="stores" [probes]="probes"></app-device-visitor-type-report-by-type>
+              </mat-tab>
+              <mat-tab label="访客活跃度">
+                <div *ngIf="sencondActived">
+                  <app-device-visitor-type-report-by-activity [stores]="stores" [probes]="probes"></app-device-visitor-type-report-by-activity>
+                </div>
+              </mat-tab>
+            </mat-tab-group>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

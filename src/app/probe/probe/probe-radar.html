@@ -1,0 +1,22 @@
+<h4 mat-dialog-title>探针雷达图</h4>
+<div mat-dialog-content>
+    <form class="form-horizontal">
+        <div class="row">
+            <div class="col-md-12 col-12">
+                <app-baidu-map [point]="point"  [scaleSupported]="false"
+                               class="container-fluid resizable" style="height:400px;width:100%;padding:0;">
+                </app-baidu-map>
+                <div class="radar-wrap">
+                    <div class="radar" id="radar">
+                        <div class="cross-section"></div>
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div mat-dialog-actions align="end">
+    <button mat-button class="btn btn-success" (click)="save()" cdkFocusInitial>确定
+    </button>
+</div>

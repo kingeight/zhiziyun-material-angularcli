@@ -1,0 +1,119 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card">
+          <app-full-screen></app-full-screen>
+          <div class="card-body ">
+            <p class="text-info">
+              <i class="material-icons">
+                warning
+              </i>人群创建15分钟后，方可用于投广告，发短信
+            </p>
+            <form class="form-inline form-row">
+              <div class="form-group input-group col-12">
+                <mat-form-field>
+                  <mat-select placeholder="选择归档状态" [(value)]="selectedArchiveStatus" (selectionChange)="search()">
+                    <mat-option *ngFor="let archiveStatus of archiveStatuses" [value]="archiveStatus.value">
+                      {{archiveStatus.text}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="form-group input-group col-12">
+                <mat-form-field class="example-form-field">
+                  <input matInput type="text" placeholder="输入名称搜索" name="searchText" [(ngModel)]="searchText">
+                </mat-form-field>
+                <div class="input-group-append">
+                  <button mat-flat-button  class="btn btn-primary"  aria-label="Clear" (click)="search()">
+                    搜索
+                  </button>
+                </div>
+              </div>
+              <div class="form-group input-group col-12">
+                <button mat-button class="btn btn-success" (click)="createDeviceSegment()">新建人群</button>
+              </div>
+            </form>
+            <div class="table-responsive">
+              <a href="javascript:;" class="pull-right" title="显示或者隐藏列"  data-toggle="dropdown"><i class="material-icons">more_vert</i></a>
+              <ul class="dropdown-menu dropdown-menu-left">
+                <li mat-menu-item>
+                  <a href="javascript:;" (click)="toggleColum('id')">编号</a>
+                </li>
+              </ul>
+              <table mat-table [dataSource]="list" class="table">
+                <ng-container matColumnDef="id">
+                  <th mat-header-cell *matHeaderCellDef>编号</th>
+                  <td mat-cell *matCellDef="let item"> {{item.id}}</td>
+                </ng-container>
+                <ng-container matColumnDef="name">
+                  <th mat-header-cell *matHeaderCellDef>名称</th>
+                  <td mat-cell *matCellDef="let item"> {{item.name}}</td>
+                </ng-container>
+                <ng-container matColumnDef="beginTime">
+                  <th mat-header-cell *matHeaderCellDef>开始时间</th>
+                  <td mat-cell *matCellDef="let item"> {{item.beginTime|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                </ng-container>
+                <ng-container matColumnDef="endTime">
+                  <th mat-header-cell *matHeaderCellDef>结束时间</th>
+                  <td mat-cell *matCellDef="let item"> {{item.endTime|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                </ng-container>
+                <ng-container matColumnDef="status">
+                  <th mat-header-cell *matHeaderCellDef>状态</th>
+                  <td mat-cell *matCellDef="let item"> {{item.status===false?'已结束':'计算中'}}</td>
+                </ng-container>
+                <ng-container matColumnDef="count">
+                  <th mat-header-cell *matHeaderCellDef>人群数量</th>
+                  <td mat-cell *matCellDef="let item"> {{item.count?item.count:(item.status===null?'--':0)}}</td>
+                </ng-container>
+                <ng-container matColumnDef="createTime">
+                  <th mat-header-cell *matHeaderCellDef>创建时间</th>
+                  <td mat-cell *matCellDef="let item"> {{item.endTime|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                </ng-container>
+                <ng-container matColumnDef="actions">
+                  <th mat-header-cell *matHeaderCellDef>
+                    <i class="material-icons">
+                      settings
+                    </i>
+                  </th>
+                  <td mat-cell *matCellDef="let item;let i=index;">
+                    <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown">操作
+                      <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-left">
+                      <li mat-menu-item>
+                        <a href="javascript:;" routerLink="/viewdevicesegmentinfo/{{item.id}}">查看</a>
+                      </li>
+                      <li mat-menu-item>
+                        <a href="javascript:;" (click)="export(item.id)">导出设备列表</a>
+                      </li>
+                      <li mat-menu-item>
+                        <a href="javascript:;" (click)="toggleArchive(item)"
+                        title="{{item.archived?'回档':'归档'}}">{{item.archived?'回档':'归档'}}</a></li>
+                      <li mat-menu-item *ngIf="item.status&&item.count">
+                        <a href="javascript:;" (click)="forceEnd(item)">强制结束</a>
+                      </li>
+                    </ul>
+                  </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+              <mat-paginator [length]="total"
+                             [pageIndex]="page"
+                             [pageSize]="rows"
+                             [pageSizeOptions]="[10, 20, 50]"
+                             [showFirstLastButtons]="true"
+                             (page)="getList($event)">
+              </mat-paginator>
+              <form style="display:none;" id='exportExcel' target='_blank' method='post'
+                    action='deviceSegmentInfo/export.action'>
+                <input name='data' />
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

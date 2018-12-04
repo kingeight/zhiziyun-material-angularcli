@@ -1,0 +1,54 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card">
+          <app-full-screen></app-full-screen>
+          <div class="card-body ">
+            <form class="form-inline form-row">
+              <div class="form-group input-group col-12">
+                <mat-form-field class="example-form-field">
+                  <input matInput type="text" placeholder="输入名称搜索" name="searchText" [(ngModel)]="searchText">
+                </mat-form-field>
+                <div class="input-group-append">
+                  <button mat-flat-button  class="btn btn-primary"  aria-label="Clear" (click)="search()">
+                    搜索
+                  </button>
+                </div>
+              </div>
+            </form>
+            <div class="table-responsive">
+              <table mat-table [dataSource]="list" class="table">
+                <ng-container matColumnDef="id">
+                  <th mat-header-cell *matHeaderCellDef>编号</th>
+                  <td mat-cell *matCellDef="let item"> {{item.id}}</td>
+                </ng-container>
+                <ng-container matColumnDef="name">
+                  <th mat-header-cell *matHeaderCellDef>名称</th>
+                  <td mat-cell *matCellDef="let item"> {{item.name}}</td>
+                </ng-container>
+                <ng-container matColumnDef="count">
+                  <th mat-header-cell *matHeaderCellDef>人群数量</th>
+                  <td mat-cell *matCellDef="let item"> {{item.count?item.count:(item.status===null?'--':0)}}</td>
+                </ng-container>
+                <ng-container matColumnDef="createTime">
+                  <th mat-header-cell *matHeaderCellDef>创建时间</th>
+                  <td mat-cell *matCellDef="let item"> {{item.createTime|date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+              </table>
+              <mat-paginator [length]="total"
+                             [pageIndex]="page"
+                             [pageSize]="rows"
+                             [pageSizeOptions]="[10, 20, 50]"
+                             [showFirstLastButtons]="true"
+                             (page)="getList($event)">
+              </mat-paginator>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

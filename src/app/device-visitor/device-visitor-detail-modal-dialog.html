@@ -1,0 +1,141 @@
+<h4 mat-dialog-title>设备详情</h4>
+<div mat-dialog-content>
+  <form class="form-horizontal">
+    <div class="row">
+      <div class="col-md-3 col-3" *ngIf="demoSupported">
+        <div class="togglebutton">
+          <label>
+            <input type="checkbox" [(ngModel)]="deviceIsShown" name="deviceIsShown" (click)="toggleDemo()">
+            <span class="toggle"></span>
+            {{deviceIsShown?'已开启一键演示':'未开启一键演示'}}
+          </label>
+        </div>
+      </div>
+      <div class="col-md-3 col-3" *ngIf="visitor.is_new===false">
+        <div class="card card-pricing card-plain" style="margin:0">
+          <h4>{{lastDate}}</h4>
+          <div class="card-description">上次到店日期</div>
+        </div>
+      </div>
+      <div class="col-md-3 col-3" *ngIf="visitCount>0">
+        <div class="card card-pricing card-plain" style="margin:0">
+          <h4>{{visitCount}}</h4>
+          <div class="card-description">访问次数</div>
+        </div>
+      </div>
+      <div class="col-md-3 col-3" *ngIf="visitLength>0">
+        <div class="card card-pricing card-plain" style="margin:0">
+          <h4>{{visitLength|number:'1.2-2'}}</h4>
+          <div class="card-description">平均驻店时长(分)</div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header card-header-info card-header-text">
+            <div class="card-icon">
+              <i class="material-icons">person</i>
+            </div>
+            <h4 class="card-title">基本属性</h4>
+          </div>
+          <div class="card-body">
+            <p>性别:{{gender===0?'未知':(gender===1?'男':'女')}}&nbsp;&nbsp;&nbsp;&nbsp;
+              {{visitor['is_new']?'新访客':'老访客'}}</p>
+            <p>年龄:{{age}}</p>
+            <p>婚姻状态:{{marriage}}</p>
+            <p [matTooltip]="populationText" matTooltipPosition="above" class="nobr">
+              <span *ngFor="let x of population">{{x.name==''?'':(x.name+':')}}{{x.value}}&nbsp;&nbsp;&nbsp;&nbsp;
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header card-header-info card-header-text">
+            <div class="card-icon">
+              <i class="material-icons">smartphone</i>
+            </div>
+            <h4 class="card-title">设备信息</h4>
+          </div>
+          <div class="card-body">
+            <p>品牌:{{brand}}&nbsp;&nbsp;&nbsp;&nbsp;型号:{{model}}</p>
+            <p [matTooltip]="did" class="nobr">设备号:{{did}}</p>
+            <p [matTooltip]="basicText" class="nobr">{{basicText}}</p>
+            <p>访客识别号:{{mac}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6" *ngIf="apps.length>0">
+        <div class="card">
+          <div class="card-header card-header-info card-header-text">
+            <div class="card-icon">
+              <i class="material-icons">apps</i>
+            </div>
+            <h4 class="card-title">应用偏好</h4>
+          </div>
+          <div class="card-body">
+            <app-word-cloud [words]="apps"></app-word-cloud>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6" *ngIf="games.length>0">
+        <div class="card">
+          <div class="card-header card-header-info card-header-text">
+            <div class="card-icon">
+              <i class="material-icons">games</i>
+            </div>
+            <h4 class="card-title">游戏兴趣</h4>
+          </div>
+          <div class="card-body">
+            <app-word-cloud [words]="games"></app-word-cloud>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6" *ngIf="topic.length>0">
+        <div class="card">
+          <div class="card-header card-header-info card-header-text">
+            <div class="card-icon">
+              <i class="material-icons">whatshot</i>
+            </div>
+            <h4 class="card-title">关注话题</h4>
+          </div>
+          <div class="card-body">
+            <app-word-cloud [words]="topic"></app-word-cloud>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6" *ngIf="shopping.length>0">
+        <div class="card">
+          <div class="card-header card-header-info card-header-text">
+            <div class="card-icon">
+              <i class="material-icons">shopping_cart</i>
+            </div>
+            <h4 class="card-title">购物兴趣</h4>
+          </div>
+          <div class="card-body">
+            <app-word-cloud [words]="shopping"></app-word-cloud>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12" *ngIf="hotApps.length>0">
+        <div class="card">
+          <div class="card-header card-header-info card-header-text">
+            <div class="card-icon">
+              <i class="material-icons">storage</i>
+            </div>
+            <h4 class="card-title">最常使用app</h4>
+          </div>
+          <div class="card-body">
+            <img *ngFor="let item of hotApps" [src]="item.icon" [title]="item.name"
+                 style="margin:0 5px 5px 0;height:50px;"/>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button class="btn btn-success" (click)="save()" cdkFocusInitial>确定</button>
+</div>

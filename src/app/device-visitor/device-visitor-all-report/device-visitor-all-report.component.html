@@ -1,0 +1,28 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card">
+          <app-full-screen></app-full-screen>
+          <div class="card-body ">
+            <p class="text-info">
+              <i class="material-icons">
+                warning
+              </i>客流的实时动态及今日实时累积情况，帮助及时知晓门店客流动态，数据更新频率30分钟
+            </p>
+            <mat-tab-group dynamicHeight (selectedIndexChange)="tabChange($event)">
+              <mat-tab label="时段分析" >
+                <app-device-visitor-all-report-by-hour [stores]="stores" [probes]="probes"></app-device-visitor-all-report-by-hour>
+              </mat-tab>
+              <mat-tab label="趋势分析">
+                <div *ngIf="sencondActived">
+                  <app-device-visitor-all-report-by-day [stores]="stores" [probes]="probes"></app-device-visitor-all-report-by-day>
+                </div>
+              </mat-tab>
+            </mat-tab-group>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

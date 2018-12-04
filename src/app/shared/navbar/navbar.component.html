@@ -1,0 +1,92 @@
+<nav #navbar class="navbar navbar-expand-lg navbar-transparent  navbar-absolute">
+  <div class="container-fluid">
+    <div class="navbar-wrapper">
+      <div class="navbar-minimize">
+        <button mat-raised-button (click)="minimizeSidebar()"
+                class="btn btn-just-icon btn-white btn-fab btn-round">
+          <i class="material-icons text_align-center visible-on-sidebar-regular">more_vert</i>
+          <i class="material-icons design_bullet-list-67 visible-on-sidebar-mini">view_list</i>
+        </button>
+      </div>
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item" *ngIf="getPath()!=='/dashboard'"><a routerLink="/dashboard">首页</a></li>
+          <li class="breadcrumb-item" *ngIf="parentPath!==null"><a routerLink="{{parentPath}}">{{parentTitle}}</a></li>
+          <li class="breadcrumb-item active" aria-current="page">{{title}}</li>
+        </ol>
+      </nav>
+      <!--<a class="navbar-brand" routerLink="{{getPath()}}"> {{getTitle()}}</a>-->
+    </div>
+    <button mat-button class="navbar-toggler btn-no-ripple" type="button" (click)="sidebarToggle()">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="navbar-toggler-icon icon-bar"></span>
+      <span class="navbar-toggler-icon icon-bar"></span>
+      <span class="navbar-toggler-icon icon-bar"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navigation">
+      <ul class="navbar-nav">
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="javascript:;" id="navbarDropdownMenuLink" data-toggle="dropdown"
+             aria-haspopup="true" aria-expanded="false">
+            {{currentSite!.text}}
+            <b class="caret"></b>
+            <p>
+              <span class="d-lg-none d-md-block">Some Actions</span>
+            </p>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right p-4 text-muted" style="min-width:400px;"
+               aria-labelledby="navbarDropdownMenuLink">
+            <form class="navbar-form">
+              <div class="input-group no-border">
+                <!--<input type="text" value="" id="siteSearchBox" class="form-control" placeholder="输入名称搜索,最少3个字符">-->
+                <mat-form-field class="example-form-field">
+                  <input matInput type="text" placeholder="输入名称搜索,最少3个字符" name="searchText" id="siteSearchBox">
+                </mat-form-field>
+                <!--<button mat-raised-button type="submit"
+                          class="btn btn-white btn-round btn-just-icon">
+                      <i class="material-icons">search</i>
+                      <div class="ripple-container"></div>
+                  </button>-->
+              </div>
+            </form>
+            <div class="loader" *ngIf="searchIng" style="position:relative;top:30px;height:30px;">
+              <svg class="circular" viewBox="25 25 50 50">
+                <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+              </svg>
+            </div>
+            <div *ngIf="!searchIng">
+              <button *ngFor="let site of searchSites" [disabled]="currentSite.value===site.value" mat-raised-button
+                      class="btn" style="padding: 8px 5px;margin: 0.3125rem 1px;"
+                      (click)="choseSite(site)">{{site.text}}
+              </button>
+            </div>
+            <fieldset class="border p-2" style="margin-top:15px;">
+              <legend class="w-auto small">最近常用</legend>
+              <button *ngFor="let site of currentSites" [disabled]="currentSite.value===site.value" mat-raised-button
+                      class="btn" style="padding: 8px 5px;margin: 0.3125rem 1px;"
+                      (click)="choseSite(site)">{{site.text}}
+              </button>
+            </fieldset>
+          </div>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link" href="javascript:;" data-toggle="dropdown"
+             aria-haspopup="true" aria-expanded="false">
+            <i class="material-icons">person</i>
+            <p>
+              <span class="d-lg-none d-md-block">Account</span>
+            </p>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-right">
+            <li mat-menu-item>
+              <a href="javascript:;" (click)="showUserInfo()"><i class="material-icons">person</i>我的信息</a>
+            </li>
+            <li mat-menu-item>
+              <a href="javascript:;" (click)="logOut()"
+                 title="退出"><i class="material-icons">exit_to_app</i>退出</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

@@ -1,0 +1,28 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card">
+          <app-full-screen></app-full-screen>
+          <div class="card-body ">
+            <p class="text-info">
+              <i class="material-icons">
+                warning
+              </i>通过自定义时间段选择，帮助分析目标客群基础属性，如性别、年龄、设备属性等，为运营决策提供辅助依据，数据更新频率30分钟
+            </p>
+            <mat-tab-group dynamicHeight (selectedIndexChange)="tabChange($event)">
+              <mat-tab label="基本属性分析" >
+                <app-device-visitor-basic-attribute [stores]="stores" [probes]="probes"></app-device-visitor-basic-attribute>
+              </mat-tab>
+              <mat-tab label="设备属性分析">
+                <div *ngIf="sencondActived">
+                  <app-device-visitor-device-attribute [stores]="stores" [probes]="probes"></app-device-visitor-device-attribute>
+                </div>
+              </mat-tab>
+            </mat-tab-group>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
