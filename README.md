@@ -19,7 +19,7 @@
 这是一套由angular实现基于google最新material设计风格的组件
 
 # 使用
-克隆项目到本地，执行npm -start,打开浏览器访问localhost:4200。
+克隆项目到本地，执行npm -serve,打开浏览器访问localhost:4200。
 * 请注意，由于浏览器同源策略，不同的域名无法直接通过浏览器进行数据通讯，解决方案包括ngnix、代理、配置同源策略文件等，这里介绍使用代理的方式。
 在项目根目录创建文件proxy.config.js文件，内容类似
 
@@ -37,6 +37,9 @@
  
  module.exports = PROXY_CONFIG;
  ```
- 所有对前缀options的访问都会被转到目标地址http://localhost:8080/dmp-probe-site/
+ 所有对前缀options的访问都会被转到目标地址http://localhost:8080/dmp-probe-site/,启动命令
+ ```
+ ng serve --proxy-config proxy.config.js
+ ```
 
 
