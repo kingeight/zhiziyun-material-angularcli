@@ -1,7 +1,7 @@
 # zhiziyun-material-angularcli
 
 该项目采用angular6( https://angular.cn )框架，使用angular-cli( https://cli.angular.io/ )技术创建。
-一系列先进的技术使得项目更安全、更高效、更简洁，在使用该项目前假设已经掌握了NodeJs( http://nodejs.cn/ )编程基础知识。以下是可能需要学习的技术：
+对比angularJs,项目更安全、更高效、更简洁，在使用该项目前假设已经掌握了NodeJs( http://nodejs.cn/ )编程基础知识。以下是可能需要学习的技术：
 
 # typescript
 系统代码采用typescript语言编写，它是javascript的超集，官网 https://www.tslang.cn/
