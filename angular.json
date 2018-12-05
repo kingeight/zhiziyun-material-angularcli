@@ -27,7 +27,9 @@
               "src/assets/css/demo.css",
               "src/assets/css/app.css",
               "src/assets/scss/material-dashboard.scss",
-              "node_modules/bootstrap-daterangepicker/daterangepicker.css"
+              "node_modules/bootstrap-daterangepicker/daterangepicker.css",
+              "src/assets/css/font/font-awesome.min.css",
+              "src/assets/css/font/materialIcon.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.js",
