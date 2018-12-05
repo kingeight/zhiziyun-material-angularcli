@@ -20,35 +20,35 @@ export class ProbeService {
     if (docked === null || typeof docked === 'undefined') {
       delete body['docked'];
     }
-    return this.http.post<ListData>('/microProbe/list.action', body, {});
+    return this.http.post<ListData>('microProbe/list.action', body, {});
   }
 
   listAll(siteId: string): Observable<ListData> {
-    return this.http.post<ListData>('/microProbe/listAll.action', {
+    return this.http.post<ListData>('microProbe/listAll.action', {
       'siteId': siteId
     }, {});
   }
 
   listHistory(siteId: string): Observable<ListData> {
-    return this.http.post<ListData>('/microProbe/listHistory.action', {
+    return this.http.post<ListData>('microProbe/listHistory.action', {
       'siteId': siteId
     }, {});
   }
 
   toggleStatus(id: number): Observable<ActionResult> {
-    return this.http.post<ActionResult>('/microProbe/toggleStatus.action', {id: id}, {});
+    return this.http.post<ActionResult>('microProbe/toggleStatus.action', {id: id}, {});
   }
 
   update(probe: any): Observable<ActionResult> {
-    return this.http.post<ActionResult>('/microProbe/update.action', probe, {});
+    return this.http.post<ActionResult>('microProbe/update.action', probe, {});
   }
 
   unbind(id: number): Observable<ActionResult> {
-    return this.http.post<ActionResult>('/microProbe/delete.action', {id: id}, {});
+    return this.http.post<ActionResult>('microProbe/delete.action', {id: id}, {});
   }
 
   add(probe: any): Observable<ActionResult> {
-    return this.http.post<ActionResult>('/microProbe/insert.action', probe, {});
+    return this.http.post<ActionResult>('microProbe/insert.action', probe, {});
   }
 
   getSignalFromRadius(radius: number): number {

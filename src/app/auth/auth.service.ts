@@ -20,7 +20,7 @@ export class AuthService {
     }
 
     login(): Observable<any> {
-        return this.http.post<any>('/options/checkUserLogin.action', '', {});
+        return this.http.post<any>('options/checkUserLogin.action', '', {});
             // .subscribe(
             // user => {
             //     if (!user) {

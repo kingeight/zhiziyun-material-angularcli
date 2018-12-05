@@ -38,7 +38,7 @@ export class NavbarComponent implements OnInit {
   currentSite: any;
   currentSites: any[];
   private searchSites: any[];
-  private searchIng: boolean;
+  searchIng: boolean;
   parentPath = null;
   parentTitle = null;
   title = null;
