@@ -14,17 +14,17 @@ export class DashboardService {
 
     // 获取网站客流量信息
     getCount(siteId: string): Observable<any> {
-        return this.http.post('/board/count.action', {siteId: siteId}, {});
+        return this.http.post('proxy/board/count.action', {siteId: siteId}, {});
     }
 
     // 获取所有网站探针
     getProbes(siteId: string): Observable<any> {
-        return this.http.post('/board/initProbe.action', {siteId: siteId}, {});
+        return this.http.post('proxy/board/initProbe.action', {siteId: siteId}, {});
     }
 
     // 获取小时趋势数据
     getVisitCount(siteId: string, microprobeId: string): Observable<any> {
-        return this.http.post('/board/deVisitHour.action',
+        return this.http.post('proxy/board/deVisitHour.action',
             {
                 siteId: siteId, microprobeId: microprobeId,
                 beginTime: moment().format('YYYY-MM-DD'),

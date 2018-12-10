@@ -17,7 +17,7 @@ export class WebSiteService {
   }
 
   getCurrentSite(): Observable<any> {
-    return this.http.post<any>('options/getCurrentSite.action', '', {});
+    return this.http.post<any>('proxy/options/getCurrentSite.action', '', {});
   }
 
   getCurrentSelectedSite() {
@@ -26,7 +26,7 @@ export class WebSiteService {
 
   setSite(site: any, sendMessage: boolean = true) {
     if (this.currentSite) {
-      this.http.post('options/addCurrentSite.action?siteId=' + site.value, '', {}).subscribe(); // 将选中的网站添加到redis
+      this.http.post('proxy/options/addCurrentSite.action?siteId=' + site.value, '', {}).subscribe(); // 将选中的网站添加到redis
     }
     this.currentSite = site;
     if (sendMessage) {

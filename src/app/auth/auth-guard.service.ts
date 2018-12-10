@@ -54,7 +54,7 @@ export class AuthGuard implements CanActivate {
     this.authService.login().subscribe(user => {
       if (!user) {
         // 跳转到登录
-        alert('没有登录');
+        this.router.navigate(['/pages/login']);
         return false;
       } else {
         this.authService.isLoggedIn = true;

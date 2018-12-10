@@ -17,6 +17,6 @@ export class MenuService {
     }
 
     fetchMenu(): Observable<Menu[]> {
-        return this.http.post<Menu[]>('/loginuser/rootMenus.action', '', {});
+        return this.http.post<Menu[]>('proxy/loginuser/rootMenus.action', '', {});
     }
 }

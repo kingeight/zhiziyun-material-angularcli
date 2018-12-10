@@ -8,20 +8,24 @@ import {Observable} from 'rxjs/Rx';
 @Injectable()
 export class HttpStatusInterceptor implements HttpInterceptor {
 
-    constructor(private auth: AuthGuard) {
-    }
+  constructor(private auth: AuthGuard) {
+  }
 
-    intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        return next.handle(req).do((event: HttpEvent<any>) => {
-            if (event instanceof HttpResponse) {
-                // do stuff with response if you want
-            }
-        }, (err: any) => {
-            if (err instanceof HttpErrorResponse) {
-                if (err.status === 420) {
-                    this.auth.noPermission(req);
-                }
-            }
-        });
-    }
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    return next.handle(req).do((event: HttpEvent<any>) => {
+      if (event instanceof HttpResponse) {
+        // do stuff with response if you want
+      }
+    }, (err: any) => {
+      if (err instanceof HttpErrorResponse) {
+        if (err.status === 420) {
+          this.auth.noPermission(req);
+        } else if (err.status === 419) {
+          this.auth.hasNotLogin(req);
+        } else if (err.status !== 200) {
+          this.auth.someSeriousMistake(req);
+        }
+      }
+    });
+  }
 }

@@ -13,7 +13,7 @@ export class AdclickSegmentInfoService {
   }
 
   list(siteId: string, archived: number, name: string, page: number, rows: number): Observable<ListData> {
-    return this.http.post<ListData>('/clickSegment/list.action', {
+    return this.http.post<ListData>('proxy/clickSegment/list.action', {
       siteId: siteId,
       archived: archived,
       name: name,
@@ -25,22 +25,22 @@ export class AdclickSegmentInfoService {
   }
 
   updateArchive(id: string): Observable<ActionResult> {
-    return this.http.post<ActionResult>('/clickSegment/updateArchive.action', {id: id}, {});
+    return this.http.post<ActionResult>('proxy/clickSegment/updateArchive.action', {id: id}, {});
   }
 
   getPlans(planIds: string): Observable<any []> {
-    return this.http.post<any []>('/clickSegment/plans.action', {plans: planIds}, {});
+    return this.http.post<any []>('proxy/clickSegment/plans.action', {plans: planIds}, {});
   }
 
   activityList(siteId: string, page: number, name: string): Observable<any []> {
-    return this.http.post<any []>('/clickSegment/activityList.action', {siteId: siteId, page: page, name: name}, {});
+    return this.http.post<any []>('proxy/clickSegment/activityList.action', {siteId: siteId, page: page, name: name}, {});
   }
 
   planList(activityId: string): Observable<any []> {
-    return this.http.post<any []>('/clickSegment/planList.action', {activityId: activityId}, {});
+    return this.http.post<any []>('proxy/clickSegment/planList.action', {activityId: activityId}, {});
   }
 
   add(siteId: string, name: string, plan: string, beginTime: string, endTime: string): Observable<ActionResult> {
-    return this.http.post<ActionResult>('/clickSegment/add.action', {siteId: siteId, name: name, plan: plan, beginTime: beginTime + ' 00:00:01', endTime: endTime + ' 23:59:59'}, {});
+    return this.http.post<ActionResult>('proxy/clickSegment/add.action', {siteId: siteId, name: name, plan: plan, beginTime: beginTime + ' 00:00:01', endTime: endTime + ' 23:59:59'}, {});
   }
 }

@@ -186,7 +186,7 @@ export class NavbarComponent implements OnInit {
       .distinctUntilChanged()
       .switchMap(text => {
         this.searchIng = true;
-        return ajax.post('/options/searchSiteOption.action', {'searchCode': text});
+        return ajax.post('proxy/options/searchSiteOption.action', {'searchCode': text});
       })
       .subscribe(xhr => {
         this.searchIng = false;

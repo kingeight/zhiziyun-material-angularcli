@@ -251,7 +251,7 @@ export class SidebarComponent implements OnInit {
   }
 
   searchSite() {
-    this.http.post<any[]>('/options/searchSiteOption.action', {'searchCode': this.searchText}, {})
+    this.http.post<any[]>('proxy/options/searchSiteOption.action', {'searchCode': this.searchText}, {})
       .subscribe(res => {
         this.searchSites = res;
       });

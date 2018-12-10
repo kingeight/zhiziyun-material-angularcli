@@ -11,7 +11,7 @@ export class WifiSegmentInfoService {
   constructor(private http: HttpClient) { }
 
   list(siteId: string,  name: string, page: number, rows: number): Observable<ListData> {
-    return this.http.post<ListData>('/segmentWifi/list.action', {
+    return this.http.post<ListData>('proxy/segmentWifi/list.action', {
       siteId: siteId,
       name: name,
       page: page,

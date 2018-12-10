@@ -14,23 +14,23 @@ export class DeviceVisitorReportService {
   }
 
   deVisitHour(beginTime: string, endTime: string, microprobeId: number, storeId: number, siteId: string): Observable<ReportMap> {
-    return this.http.post<ReportMap>('/dereport/deVisitHour.action',
+    return this.http.post<ReportMap>('proxy/dereport/deVisitHour.action',
       {beginTime: beginTime, endTime: endTime, microprobeId: microprobeId, storeId: storeId, siteId: siteId}, {});
   }
 
   deVisitAll(beginTime: string, endTime: string, microprobeId: number, storeId: number, siteId: string): Observable<ReportMap> {
-    return this.http.post<ReportMap>('/dereport/deVisitAll.action',
+    return this.http.post<ReportMap>('proxy/dereport/deVisitAll.action',
       {beginTime: beginTime, endTime: endTime, microprobeId: microprobeId, storeId: storeId, siteId: siteId}, {});
   }
 
   deVisitType(beginTime: string, endTime: string, microprobeId: number, storeId: number, siteId: string, visitorType: string): Observable<ReportMap> {
-    return this.http.post<ReportMap>('/dereport/deVisitType.action',
+    return this.http.post<ReportMap>('proxy/dereport/deVisitType.action',
       {beginTime: beginTime, endTime: endTime, microprobeId: microprobeId, storeId: storeId, siteId: siteId, visitorType: visitorType}, {});
   }
 
   deVisitTypeList(beginTime: string, endTime: string, microprobeId: number,
                   storeId: number, siteId: string, page: number, rows: number, visitorType: string): Observable<ListData> {
-    return this.http.post<ListData>('/dereport/deVisitTypeList.action',
+    return this.http.post<ListData>('proxy/dereport/deVisitTypeList.action',
       {
         beginTime: beginTime, endTime: endTime, microprobeId: microprobeId,
         storeId: storeId, siteId: siteId, page: page, rows: rows, visitorType: visitorType
@@ -38,12 +38,12 @@ export class DeviceVisitorReportService {
   }
 
   deVisitActivity(beginTime: string, endTime: string, microprobeId: number, storeId: number, siteId: string, activity: string): Observable<ReportMap> {
-    return this.http.post<ReportMap>('/dereport/deVisitActivity.action',
+    return this.http.post<ReportMap>('proxy/dereport/deVisitActivity.action',
       {beginTime: beginTime, endTime: endTime, microprobeId: microprobeId, storeId: storeId, siteId: siteId, activity: activity}, {});
   }
 
   deVisitActivityList(beginTime: string, endTime: string, microprobeId: number, storeId: number, siteId: string, activity: string, page: number, rows: number): Observable<ListData> {
-    return this.http.post<ListData>('/dereport/deVisitActivityList.action',
+    return this.http.post<ListData>('proxy/dereport/deVisitActivityList.action',
       {
         beginTime: beginTime, endTime: endTime, microprobeId: microprobeId,
         storeId: storeId, siteId: siteId, page: page, rows: rows, activity: activity
@@ -51,22 +51,22 @@ export class DeviceVisitorReportService {
   }
 
   deVisitTimeLength(beginTime: string, endTime: string, microprobeId: number, storeId: number, siteId: string): Observable<ReportMap> {
-    return this.http.post<ReportMap>('/dereport/deVisitTimeLength.action',
+    return this.http.post<ReportMap>('proxy/dereport/deVisitTimeLength.action',
       {beginTime: beginTime, endTime: endTime, microprobeId: microprobeId, storeId: storeId, siteId: siteId}, {});
   }
 
   deVisitTimeLengthList(beginTime: string, endTime: string, microprobeId: number, storeId: number, siteId: string, page: number, rows: number): Observable<ListData> {
-    return this.http.post<ListData>('/dereport/deVisitTimeLengthList.action',
+    return this.http.post<ListData>('proxy/dereport/deVisitTimeLengthList.action',
       {beginTime: beginTime, endTime: endTime, microprobeId: microprobeId, storeId: storeId, siteId: siteId, page: page, rows: rows}, {});
   }
 
   deVisitAgeAndGender(beginTime: string, endTime: string, microprobeId: number, storeId: number, siteId: string): Observable<ReportMap> {
-    return this.http.post<ReportMap>('/dereport/deVisitAgeAndGender.action',
+    return this.http.post<ReportMap>('proxy/dereport/deVisitAgeAndGender.action',
       {beginTime: beginTime, endTime: endTime, microprobeId: microprobeId, storeId: storeId, siteId: siteId}, {});
   }
 
   deVisitBrandDevicePrice(beginTime: string, endTime: string, microprobeId: number, storeId: number, siteId: string): Observable<ReportMap> {
-    return this.http.post<ReportMap>('/dereport/deVisitBrandDevicePrice.action',
+    return this.http.post<ReportMap>('proxy/dereport/deVisitBrandDevicePrice.action',
       {beginTime: beginTime, endTime: endTime, microprobeId: microprobeId, storeId: storeId, siteId: siteId}, {});
   }
 }

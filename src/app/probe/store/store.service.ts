@@ -13,37 +13,37 @@ export class StoreService {
   }
 
   list(siteId: string, name: string, page: number, rows: number): Observable<ListData> {
-    return this.http.post<ListData>('/probestore/list.action', {
+    return this.http.post<ListData>('proxy/probestore/list.action', {
       'siteId': siteId, 'name': name, 'page': page, 'rows': rows,
       'order': 'desc', 'sort': 'createTime'
     }, {});
   }
 
   listAll(siteId: string) {
-    return this.http.post<ListData>('/probestore/listAll.action', {
+    return this.http.post<ListData>('proxy/probestore/listAll.action', {
       'siteId': siteId
     }, {});
   }
 
   insert(store: any): Observable<ActionResult> {
-    return this.http.post<ActionResult>('/probestore/insert.action', store, {});
+    return this.http.post<ActionResult>('proxy/probestore/insert.action', store, {});
 
   }
 
   remove(id: number): Observable<ActionResult> {
-    return this.http.post<ActionResult>('/probestore/delete.action', {id: id}, {});
+    return this.http.post<ActionResult>('proxy/probestore/delete.action', {id: id}, {});
   }
 
   update(store: any): Observable<ActionResult> {
-    return this.http.post<ActionResult>('/probestore/update.action', store, {});
+    return this.http.post<ActionResult>('proxy/probestore/update.action', store, {});
   }
 
   select(id: number): Observable<ActionResult> {
-    return this.http.post<ActionResult>('/probestore/select.action', {id: id}, {});
+    return this.http.post<ActionResult>('proxy/probestore/select.action', {id: id}, {});
   }
 
   queryLimitRegion(): Observable<ActionResult> {
-    return this.http.post<ActionResult>('/probestore/queryLimitRegion.action', {}, {});
+    return this.http.post<ActionResult>('proxy/probestore/queryLimitRegion.action', {}, {});
   }
 
   inLocation(addressComponents, limitLocations) {

@@ -13,7 +13,7 @@ export class DeviceSegmentInfoService {
   }
 
   list(siteId: string, archived: number, name: string, page: number, rows: number): Observable<ListData> {
-    return this.http.post<ListData>('/deviceSegmentInfo/list.action', {
+    return this.http.post<ListData>('proxy/deviceSegmentInfo/list.action', {
       siteId: siteId,
       archived: archived,
       name: name,
@@ -25,27 +25,27 @@ export class DeviceSegmentInfoService {
   }
 
   updateArchive(id: string): Observable<ActionResult> {
-    return this.http.post<ActionResult>('/deviceSegmentInfo/updateArchive.action', {id: id}, {});
+    return this.http.post<ActionResult>('proxy/deviceSegmentInfo/updateArchive.action', {id: id}, {});
   }
 
   forceEnd(id: string): Observable<ActionResult> {
-    return this.http.post<ActionResult>('/deviceSegmentInfo/forceEnd.action', {id: id}, {});
+    return this.http.post<ActionResult>('proxy/deviceSegmentInfo/forceEnd.action', {id: id}, {});
   }
 
   queryTags(): Observable<ListData> {
-    return this.http.post<ListData>('/deviceSegmentInfo/queryTags.action', {}, {});
+    return this.http.post<ListData>('proxy/deviceSegmentInfo/queryTags.action', {}, {});
   }
 
   queryAgentId(): Observable<ActionResult> {
-    return this.http.post<ActionResult>('/deviceSegmentInfo/queryAgentId.action', {}, {});
+    return this.http.post<ActionResult>('proxy/deviceSegmentInfo/queryAgentId.action', {}, {});
   }
 
   insert(data: any): Observable<ActionResult> {
-    return this.http.post<ActionResult>('/deviceSegmentInfo/insert.action', data, {});
+    return this.http.post<ActionResult>('proxy/deviceSegmentInfo/insert.action', data, {});
   }
 
   queryById(id: number): Observable<ActionResult> {
-    return this.http.post<ActionResult>('/deviceSegmentInfo/queryById.action', {id: id}, {});
+    return this.http.post<ActionResult>('proxy/deviceSegmentInfo/queryById.action', {id: id}, {});
   }
 
 }

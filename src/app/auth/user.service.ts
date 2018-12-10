@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs/Rx';
+import {ActionResult} from '../util/action-result';
 
 // 全局登录用户服务
 @Injectable({
@@ -22,7 +23,12 @@ export class UserService {
   }
 
   logOut(): Observable<any> {
-    return this.http.post('', {}, {});
+    return this.http.post('proxy/loginuser/logout.action', {}, {});
+  }
+
+  logInt(email: string, password: string, chkRem: boolean): Observable<ActionResult> {
+    return this.http.post<ActionResult>('proxy/loginuser/doLogin.action',
+      {email: email, password: password, chkRem: chkRem}, {});
   }
 
 }
