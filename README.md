@@ -38,7 +38,7 @@ const PROXY_CONFIG = [
  
  module.exports = PROXY_CONFIG;
  ```
- 所有对前缀options的访问都会被转到目标地址/dmp-probe-site/,启动命令
+ 所有对前缀options的访问都会被转到目标地址/somehost/,启动命令
  ```
  ng serve --proxy-config proxy.config.js
  ```
