@@ -29,7 +29,7 @@ const PROXY_CONFIG = [
          "context": [
              "/options"
          ],
-         "target": "http://localhost:8080/dmp-probe-site/",
+         "target": "http://localhost:8080/somehost/",
          "secure": false,
          "logLevel": "debug",
          "changeOrigin": true
